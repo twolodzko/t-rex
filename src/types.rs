@@ -1,6 +1,7 @@
+use super::utils::{Queue, is_special};
 use std::{
     cell::{Ref, RefCell},
-    collections::{HashMap, HashSet},
+    collections::HashMap,
     hash::Hash,
     rc::Rc,
 };
@@ -117,14 +118,6 @@ impl std::fmt::Display for Boundary {
             Word(false) => write!(f, r"\B"),
         }
     }
-}
-
-#[inline]
-pub(super) fn is_special(c: char) -> bool {
-    matches!(
-        c,
-        '^' | '.' | '[' | '$' | '(' | ')' | '|' | '*' | '+' | '?' | '{' | '\\'
-    )
 }
 
 impl PartialEq for State {
@@ -248,25 +241,5 @@ impl<'a, 'b: 'a> IntoIterator for &'b Iter<'a> {
 
     fn into_iter(self) -> Self::IntoIter {
         self.r.arrows.iter()
-    }
-}
-
-#[derive(Default)]
-pub(super) struct Queue {
-    seen: HashSet<usize>,
-    queue: Vec<State>,
-}
-
-impl Queue {
-    pub(super) fn push(&mut self, value: State) -> bool {
-        if self.seen.insert(value.addr()) {
-            self.queue.push(value);
-            return true;
-        }
-        false
-    }
-
-    pub(super) fn pop(&mut self) -> Option<State> {
-        self.queue.pop()
     }
 }

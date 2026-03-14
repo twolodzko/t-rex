@@ -1,4 +1,7 @@
-use super::types::{Boundary, Character, is_special};
+use super::{
+    types::{Boundary, Character},
+    utils::is_special,
+};
 use std::{iter::Peekable, str::Chars};
 
 #[derive(Debug, Clone)]

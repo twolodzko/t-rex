@@ -1,4 +1,7 @@
-use super::types::{Arrow, Boundary, Character, Queue, Regex};
+use super::{
+    types::{Arrow, Boundary, Character, Regex},
+    utils::Queue,
+};
 
 impl Regex {
     pub fn is_match(&self, string: &str) -> bool {

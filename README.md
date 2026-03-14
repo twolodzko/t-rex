@@ -113,6 +113,10 @@ for i in 0..=chars.len() {
 // failure
 ```
 
+An important implementation detail to ensure performance of the engine, is that
+the `Queue` does not accept duplicated states, so if multiple paths would lead to the same state,
+it would not be re-visited saving unnecessary computations.
+
 ## Testing
 
 The implementation was tested against over 900 unit tests from the AT&T ast library regex engine test suite

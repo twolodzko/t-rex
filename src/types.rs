@@ -7,7 +7,10 @@ use std::{
 };
 
 #[derive(Debug)]
-pub struct Regex(pub(super) State);
+pub struct Regex {
+    pub(super) graph: State,
+    pub(super) ignore_case: bool,
+}
 
 #[derive(Debug, Clone, Default)]
 pub(super) struct State(Rc<RefCell<Node>>);
@@ -183,8 +186,8 @@ impl Regex {
 
     pub(super) fn nodes(&self) -> Vec<State> {
         let mut queue = Queue::default();
-        let mut nodes = vec![self.0.clone()];
-        queue.push(self.0.clone());
+        let mut nodes = vec![self.graph.clone()];
+        queue.push(self.graph.clone());
         while let Some(s) = queue.pop() {
             for a in &s.arrows() {
                 use Arrow::*;

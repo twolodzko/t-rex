@@ -3,7 +3,6 @@ use std::{
     fs::File,
     io::{self, BufRead, BufReader, Read, Write},
     path::PathBuf,
-    str::FromStr,
 };
 use t_rex::Regex;
 
@@ -16,6 +15,10 @@ struct Args {
     /// Only a count of selected lines is written to standard output
     #[arg(short, long)]
     count: bool,
+
+    /// Perform case-insensitive matching
+    #[arg(short, long)]
+    ignore_case: bool,
 
     /// Display dot graph of the NFA for the regular expression and exit
     #[arg(long)]
@@ -46,7 +49,7 @@ fn main() {
     let mut inp: BufReader<Box<dyn Read>>;
     let mut out = io::stdout().lock();
 
-    let regex = match Regex::from_str(&args.regex) {
+    let regex = match Regex::new(&args.regex, args.ignore_case) {
         Ok(regex) => regex,
         Err(err) => error!(err),
     };

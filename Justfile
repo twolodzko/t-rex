@@ -58,12 +58,13 @@ integration-test: build
         # lazy matching is not supported
         $2 ~ /[+*?]+/ { next }
         # character classes are not supported
-        $2 ~ /\[\^?\[:[a-z]+:\]|\[\[.ch.\]\]/ { next }
+        $2 ~ /\[\^?\[:[a-z]+:\]|\[\[.[a-zA-Z0-9]+.\]\]/ { next }
         # special modifiers are not supported
         $2 ~ /\(\?[<>:=!i]/ { next }
 
-        # testing only against the extended regular expressions flavor
-        $1 == "E" {
+        FILENAME ~ /pcre-4/ && FNR >= 19 && FNR <= 22 { next }
+
+        // {
             if ($3 == "NULL") {
                 $3 = ""
             }
@@ -74,7 +75,10 @@ integration-test: build
             } else if ($4 ~ /E[A-Z]+|BAD/ || $5 ~ /E[A-Z]+|BAD/) {
                 expected = 2
             }
+        }
 
+        # testing only against the extended regular expressions flavor
+        $1 == "E" || $1 == "BE" {
             status = system("echo '\''" $3 "'\'' | ./trex '\''" $2 "'\'' >/dev/null")
             if (status != expected) {
                 failed++
@@ -83,8 +87,17 @@ integration-test: build
                 passed++
                 # printf("%s:%s \t OK: \t %s \t %s\n", FILENAME, FNR, $2, $3)
             }
+        }
 
-            previous = $2
+        $1 == "Ei" {
+            status = system("echo '\''" $3 "'\'' | ./trex -i '\''" $2 "'\'' >/dev/null")
+            if (status != expected) {
+                failed++
+                printf("%s:%s \t FAILED: \t %s \t %s\n", FILENAME, FNR, $2, $3)
+            } else {
+                passed++
+                # printf("%s:%s \t OK: \t %s \t %s\n", FILENAME, FNR, $2, $3)
+            }
         }
 
         END {

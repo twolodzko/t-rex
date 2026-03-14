@@ -1,5 +1,4 @@
 use super::Regex;
-use std::str::FromStr;
 use test_case::test_case;
 
 #[test_case(
@@ -201,7 +200,7 @@ use test_case::test_case;
         "word boundary only"
     )]
 fn matches(regex: &str, example: &str, expected: bool) {
-    let regex = Regex::from_str(regex).unwrap();
+    let regex = Regex::new(regex, false).unwrap();
     println!("{}", regex.graph());
     assert_eq!(regex.is_match(example), expected);
 }

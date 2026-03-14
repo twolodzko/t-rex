@@ -1,7 +1,7 @@
 # t-rex: Tim's regular expressions engine
 
 This is an implementation of regular expressions library and a simple command-line application.
-It uses regular expressions variant mostly consistent with [POSIX] (e.g. grep). 
+It uses regular expressions variant mostly consistent with [POSIX] (e.g. grep).
 
 ## Features
 
@@ -119,8 +119,9 @@ it would not be re-visited saving unnecessary computations.
 
 ## Testing
 
-The implementation was [tested] against over 900 unit tests from the [AT&T's ast] library regex engine test suite
-passing most of the tests. The non-passing tests are mostly due to different implementation details.
+The implementation was [tested] against over one thousand of unit tests from the [AT&T's ast] library
+regex engine test suite passing most of the tests. The non-passing tests are mostly due to different
+implementation details and design decisions.
 
 ## Grammar
 

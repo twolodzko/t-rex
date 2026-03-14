@@ -2,17 +2,23 @@ use super::{
     Regex,
     parser::{ParsingError, Token, parse},
     types::{Arrow, State},
+    utils::regex_to_lower,
 };
-use std::str::FromStr;
 
-impl FromStr for Regex {
-    type Err = ParsingError;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let token = parse(s)?;
+impl Regex {
+    pub fn new(regex: &str, ignore_case: bool) -> Result<Regex, ParsingError> {
+        let token = if ignore_case {
+            let regex = regex_to_lower(regex);
+            parse(&regex)?
+        } else {
+            parse(regex)?
+        };
         let start = State::default();
         make_link(&token, start.clone(), State::end());
-        Ok(Regex(start))
+        Ok(Regex {
+            graph: start,
+            ignore_case,
+        })
     }
 }
 

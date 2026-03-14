@@ -1,21 +1,26 @@
 use super::{
     types::{Arrow, Boundary, Character, Regex},
-    utils::Queue,
+    utils::{Queue, to_lower},
 };
 
 impl Regex {
     pub fn is_match(&self, string: &str) -> bool {
         use Arrow::*;
-        if self.0.reaches_final() {
+        if self.graph.reaches_final() {
             // regex that always matches
             return true;
         }
 
-        let chars = string.chars().collect::<Vec<char>>();
+        let chars = if self.ignore_case {
+            string.chars().map(to_lower).collect::<Vec<char>>()
+        } else {
+            string.chars().collect::<Vec<char>>()
+        };
+
         for i in 0..=chars.len() {
             // use queue of the states visit, it makes sure not to re-visit the already seen ones
             let mut queue = Queue::default();
-            queue.push(self.0.clone());
+            queue.push(self.graph.clone());
 
             // go beyond the string length to make sure it reaches the end state
             for j in i..=chars.len() {

@@ -1,7 +1,4 @@
-use super::{
-    types::{Boundary, Character},
-    utils::is_special,
-};
+use super::types::{Boundary, Character};
 use std::{iter::Peekable, str::Chars};
 
 #[derive(Debug, Clone)]
@@ -294,9 +291,7 @@ impl<'a> Parser<'a> {
                 char::from_u32(u).ok_or(ParsingError::NotANumber(s))?
             }
             // in particular: \'"
-            '\'' | '"' => c,
-            c if is_special(c) => c,
-            c => return Err(ParsingError::BadEscape(c)),
+            c => c,
         };
         Ok(Literal(c))
     }
@@ -322,7 +317,6 @@ pub enum ParsingError {
     InvalidRange(char, char),
     InvalidRepetitions,
     NotANumber(String),
-    BadEscape(char),
 }
 
 impl std::fmt::Display for ParsingError {
@@ -337,7 +331,6 @@ impl std::fmt::Display for ParsingError {
                 write!(f, "invalid repetitions counts")
             }
             NotANumber(s) => write!(f, "{} is not a number", s),
-            BadEscape(c) => write!(f, "unsupported escape character \\{}", c),
         }
     }
 }

@@ -346,7 +346,7 @@ impl std::fmt::Display for ParsingError {
 
 #[cfg(test)]
 mod tests {
-    use crate::nfa::parser::parse;
+    use super::parse;
     use test_case::test_case;
 
     #[test_case(

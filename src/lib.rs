@@ -1,4 +1,8 @@
-mod nfa;
-mod vm;
+mod compiler;
+mod matcher;
+mod parser;
+#[cfg(test)]
+mod tests;
+mod types;
 
-pub use nfa::Regex;
+pub use types::Regex;

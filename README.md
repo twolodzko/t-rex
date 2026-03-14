@@ -130,7 +130,6 @@ The [POSIX] grammar is fully described in the Linux regex(7) man page.
 ```text
 NUM := a non-negative integer
 CHAR := any character
-SPECIAL := ^.[$()|*+?{\'"
 
 regex := branch [ '|' branch ]*
 branch := piece*
@@ -139,7 +138,7 @@ bound := '{' NUM ( ',' NUM )? '}'
 atom := CHAR | escaped | '(' regex ')'
 bracket := '[' '^'? [ '-' | ']' ]? ( range | CHAR )? '-'? ']'
 range := CHAR '-' CHAR
-escaped := '\' [ SPECIAL | [wWdDsSbBnrt0] | xNN | uNNNN ]
+escaped := '\' CHAR
 ```
 
 [POSIX]: https://www.man7.org/linux/man-pages/man7/regex.7.html

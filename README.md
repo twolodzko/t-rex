@@ -1,4 +1,4 @@
-# t-rex: Tim's regular expressions
+# t-rex: Tim's regular expressions engine
 
 This is an implementation of regular expressions library and a simple command-line application.
 It uses regular expressions variant mostly consistent with [POSIX] (e.g. grep). 

@@ -119,7 +119,7 @@ it would not be re-visited saving unnecessary computations.
 
 ## Testing
 
-The implementation was tested against over 900 unit tests from the AT&T ast library regex engine test suite
+The implementation was [tested] against over 900 unit tests from the [AT&T's ast] library regex engine test suite
 passing most of the tests. The non-passing tests are mostly due to different implementation details.
 
 ## Grammar
@@ -146,4 +146,5 @@ escaped := '\' [ SPECIAL | [wWdDsSbBnrt0] | xNN | uNNNN ]
 [Ullman]: http://infolab.stanford.edu/~ullman/focs/ch10.pdf
 [Ken Thompson]: https://dl.acm.org/doi/epdf/10.1145/363347.363387
 [backtracking]: https://stackoverflow.com/questions/79058777/how-does-regex-decide-when-to-backtrack
-
+[AT&T's ast]: https://github.com/att/ast/blob/master/src/cmd/re/
+[tested]: https://stackoverflow.com/questions/15819919/where-can-i-find-unit-tests-for-regular-expressions-in-multiple-languages

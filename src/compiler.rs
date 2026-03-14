@@ -37,11 +37,18 @@ fn make_link(token: &Token, start: State, end: State) {
         // abc
         Branch(b) => link_branch(b, start, end),
         // a|b
-        Alternative(b) => {
+        Alternation(b) => {
             for t in b {
-                let state = State::default();
-                make_link(t, start.clone(), state.clone());
-                state.insert_arrow(Epsilon(end.clone()));
+                if let Branch(v) = t
+                    && v.is_empty()
+                {
+                    // simplify empty branches
+                    start.insert_arrow(Epsilon(end.clone()));
+                } else {
+                    let state = State::default();
+                    make_link(t, start.clone(), state.clone());
+                    state.insert_arrow(Epsilon(end.clone()));
+                }
             }
         }
         // a*

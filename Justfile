@@ -58,9 +58,11 @@ integration-test: build
         # lazy matching is not supported
         $2 ~ /[+*?]+/ { next }
         # character classes are not supported
-        $2 ~ /\[\^?\[:[a-z]+:\]|\[\[.[a-zA-Z0-9]+.\]\]/ { next }
+        $2 ~ /\[[^]]*\[[:.=]/ { next }
         # special modifiers are not supported
         $2 ~ /\(\?[<>:=!i]/ { next }
+        # dont care about empty branches in alternation
+        $4 == "ENULL" { next }
 
         FILENAME ~ /pcre-4/ && FNR >= 19 && FNR <= 22 { next }
 
@@ -78,7 +80,7 @@ integration-test: build
         }
 
         # testing only against the extended regular expressions flavor
-        $1 == "E" || $1 == "BE" {
+        $1 == "E" || $1 == "BE" || $1 == "Ez" {
             status = system("echo '\''" $3 "'\'' | ./trex '\''" $2 "'\'' >/dev/null")
             if (status != expected) {
                 failed++
@@ -89,7 +91,7 @@ integration-test: build
             }
         }
 
-        $1 == "Ei" {
+        $1 == "Ei" || $1 == "Ezi" {
             status = system("echo '\''" $3 "'\'' | ./trex -i '\''" $2 "'\'' >/dev/null")
             if (status != expected) {
                 failed++

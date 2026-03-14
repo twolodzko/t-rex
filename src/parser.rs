@@ -10,7 +10,7 @@ pub(super) enum Token {
     /// abc[a-z]+
     Branch(Vec<Token>),
     /// abc|def
-    Alternative(Vec<Token>),
+    Alternation(Vec<Token>),
     /// a+, a?, a*, a{n}, a{n,m}
     Repeat(Box<Token>, usize, Option<usize>),
 }
@@ -28,27 +28,38 @@ struct Parser<'a> {
 
 impl<'a> Parser<'a> {
     fn regex(&mut self) -> Result<Token, ParsingError> {
-        self.alternative()
+        self.alternation()
     }
 
-    fn alternative(&mut self) -> Result<Token, ParsingError> {
+    fn alternation(&mut self) -> Result<Token, ParsingError> {
         use Token::*;
         let mut acc = Vec::new();
+        let mut expect_branch = false;
+        if let Some('|') = self.chars.peek() {
+            self.chars.next();
+            acc.push(Branch(Vec::new()));
+            expect_branch = true;
+        }
         while self.chars.peek().is_some() {
             let branch = self.branch()?;
             acc.push(branch);
+            expect_branch = false;
             if let Some('|') = self.chars.peek() {
                 self.chars.next();
+                expect_branch = true;
             } else {
                 break;
             }
         }
+        if expect_branch {
+            acc.push(Branch(Vec::new()));
+        }
         let token = match acc.len() {
-            // empty branch makes more sense than empty alternative
-            // also, less edge cases
+            // empty branch makes more sense than empty alteration
             0 => Branch(acc),
+            // any alteration would have 2+ branches, so it is not
             1 => acc.pop().unwrap(),
-            _ => Alternative(acc),
+            _ => Alternation(acc),
         };
         Ok(token)
     }
@@ -114,7 +125,7 @@ impl<'a> Parser<'a> {
                         return Some(Err(ParsingError::Unexpected('?')));
                     };
                 }
-                let branch = match self.alternative() {
+                let branch = match self.alternation() {
                     Ok(b) => b,
                     Err(err) => return Some(Err(err)),
                 };
@@ -160,7 +171,6 @@ impl<'a> Parser<'a> {
                 let Some(c) = self.chars.peek() else {
                     return Some(Err(ParsingError::EndOfInput));
                 };
-                // TODO: handle whitespaces
                 let m = match c {
                     ',' => {
                         self.chars.next();
@@ -178,7 +188,7 @@ impl<'a> Parser<'a> {
                     _ => return Some(Err(ParsingError::InvalidRepetitions)),
                 };
                 if let Some(m) = m
-                    && (n > m || m == 0 || m > 100_000)
+                    && (n > m || m > 100_000)
                 {
                     return Some(Err(ParsingError::InvalidRepetitions));
                 }

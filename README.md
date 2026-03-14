@@ -7,7 +7,7 @@ It uses regular expressions variant mostly consistent with [POSIX] (e.g. grep).
 
 * Matching individual characters like `a`, `8`, or `\t`.
 * Character sets `[a-z0-9]` and negated sets `[^0-9]` (not a number).
-* Alterations, like `a|b`, `dog|cat`.
+* Alternation, like `a|b`, `dog|cat`.
 * Repetitions, e.g. `a?` (zero or one), `a+` (more than one), `a*` (any number), `a{5}` (exactly five), `a{2,3}`, etc.
 * Sub-patterns can be grouped with brackets `(xo)+`.
 * Matching group of characters like words `\w`, digits `\d`.
@@ -25,8 +25,8 @@ Regular expression is parsed to a non-deterministic finite automata (NFA). This 
 [backtracking] and makes it run in linear, rather than exponential, time as describd by [Russ Cox].
 
 For example, regular expression `a(a+|abc)bc?d` gets compiled to the graph shown below.
-Matching single characters like `a` are state transitions. Alterations, like
-`a+|abc` are alternative branches of the graph. The any number of matches `a*` would
+Matching single characters like `a` are state transitions. Alternation, like
+`a+|abc` are alternate branches of the graph. The any number of matches `a*` would
 become a cycle in the graph, and `a+` is equivalent to `aa*` so it leads to a cycle as well.
 `c?` matches `c` zero or one times, so there's an additional arrow marked  as ε which jumps
 unconditionally to the next state.  

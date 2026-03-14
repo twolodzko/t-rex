@@ -234,9 +234,11 @@ impl<'a> Parser<'a> {
                         }
                         _ => {
                             if let Some(t) = acc.pop() {
-                                let Literal(start) = t else { unreachable!() };
-                                if start >= end {
-                                    return Err(ParsingError::InvalidRange(start, end));
+                                let Literal(start) = t else {
+                                    return Err(ParsingError::InvalidRange);
+                                };
+                                if start > end {
+                                    return Err(ParsingError::InvalidRange);
                                 }
                                 acc.push(Range(start, end));
                             } else {
@@ -324,7 +326,7 @@ pub enum ParsingError {
     EndOfInput,
     Unexpected(char),
     Missing(char),
-    InvalidRange(char, char),
+    InvalidRange,
     InvalidRepetitions,
     NotANumber(String),
 }
@@ -336,7 +338,7 @@ impl std::fmt::Display for ParsingError {
             EndOfInput => write!(f, "unexpected end of input"),
             Unexpected(c) => write!(f, "unexpected character {}", c),
             Missing(c) => write!(f, "missing {}", c),
-            InvalidRange(a, b) => write!(f, "{}-{} is not a valid range", a, b),
+            InvalidRange => write!(f, "invalid range format"),
             InvalidRepetitions => {
                 write!(f, "invalid repetitions counts")
             }

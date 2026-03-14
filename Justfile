@@ -41,15 +41,17 @@ integration-test: build
     #!/bin/bash
     set -euo pipefail
 
-    awk '
-        {
-            FS=" "
+    awk '# remember previous line to replace SAME in the tests
+        // {
             if ($2 == "SAME") {
                 $2=prev
             } else {
                 prev=$2
             }
         }
+
+        # those lines failed to parse for some reason, so skipping them
+        $3 == "" { next }
 
         # self-references are not supported
         $2 ~ /\\[1-9]/ { next }
@@ -60,9 +62,7 @@ integration-test: build
         # special modifiers are not supported
         $2 ~ /\(\?[<>:=!i]/ { next }
 
-        # those lines failed to parse for some reason, so skipping them
-        $3 == "" { next }
-
+        # testing only against the extended regular expressions flavor
         $1 == "E" {
             if ($3 == "NULL") {
                 $3 = ""

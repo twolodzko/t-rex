@@ -124,6 +124,8 @@ passing most of the tests. The non-passing tests are mostly due to different imp
 
 ## Grammar
 
+The [POSIX] grammar is fully described in the Linux regex(7) man page.
+
 ```text
 NUM := a non-negative integer
 CHAR := any character

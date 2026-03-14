@@ -16,19 +16,14 @@ pub(super) enum Token {
 }
 
 pub(super) fn parse(regex: &str) -> Result<Token, ParsingError> {
-    Parser::from(regex).regex()
+    let mut parser = Parser {
+        chars: regex.chars().peekable(),
+    };
+    parser.regex()
 }
 
 struct Parser<'a> {
     chars: Peekable<Chars<'a>>,
-}
-
-impl<'a> From<&'a str> for Parser<'a> {
-    fn from(regex: &'a str) -> Self {
-        Parser {
-            chars: regex.chars().peekable(),
-        }
-    }
 }
 
 impl<'a> Parser<'a> {

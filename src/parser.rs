@@ -315,7 +315,7 @@ impl<'a> Parser<'a> {
                 break;
             };
             self.chars.next();
-            n = (n * 10) + d;
+            n = n.checked_mul(10)?.checked_add(d)?;
         }
         Some(n as usize)
     }

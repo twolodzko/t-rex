@@ -43,6 +43,8 @@ integration-test: build
 
     awk '# remember previous line to replace SAME in the tests
         // {
+            FS = " "
+
             if ($2 == "SAME") {
                 $2=prev
             } else {
@@ -50,19 +52,23 @@ integration-test: build
             }
         }
 
+        FILENAME ~ /rxposix|pcre-/ { FS = "\t" }
+
         # those lines failed to parse for some reason, so skipping them
         $3 == "" { next }
 
-        # self-references are not supported
-        $2 ~ /\\[1-9]/ { next }
+        # self-references etc are not supported
+        $2 ~ /\\[1-9QEAZGUzZ]/ { next }
         # lazy matching is not supported
         $2 ~ /[+*?]+/ { next }
         # character classes are not supported
         $2 ~ /\[[^]]*\[[:.=]/ { next }
         # special modifiers are not supported
         $2 ~ /\(\?[<>:=!i]/ { next }
+        # word boundaries of this form are not supported
+        $2 ~ /\\<|\\>/ { next }
         # dont care about empty branches in alternation
-        $4 == "ENULL" { next }
+        $4 == "ENULL" || $4 == "BADESC" { next }
 
         FILENAME ~ /pcre-4/ && FNR >= 19 && FNR <= 22 { next }
 

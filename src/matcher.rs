@@ -17,15 +17,17 @@ impl Regex {
             string.chars().collect::<Vec<char>>()
         };
 
+        let mut queue = Queue::default();
+        let mut next = Queue::default();
+
         for i in 0..=chars.len() {
             // use queue of the states visit, it makes sure not to re-visit the already seen ones
-            let mut queue = Queue::default();
+            queue.clear();
             queue.push(self.graph.clone());
 
             // go beyond the string length to make sure it reaches the end state
             for j in i..=chars.len() {
                 // match character against multiple states simultaneously
-                let mut next = Queue::default();
                 while let Some(state) = queue.pop() {
                     if state.is_final() {
                         return true;
@@ -75,7 +77,7 @@ impl Regex {
                     }
                 }
                 // using the queue for the next character
-                queue = next;
+                queue = std::mem::take(&mut next);
             }
         }
         false

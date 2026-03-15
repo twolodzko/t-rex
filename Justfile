@@ -23,7 +23,7 @@ benchmark: build
         hyperfine -r "$1" --shell=none -w 5 "$2" "$3"
     }
 
-    bench 1000 \
+    bench 10000 \
         "./trex 'fn [a-z]+\(' src/main.rs" \
         "grep -E 'fn [a-z]+\(' src/main.rs"
 

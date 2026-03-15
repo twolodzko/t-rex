@@ -52,6 +52,11 @@ impl Queue {
     pub(super) fn pop(&mut self) -> Option<State> {
         self.queue.pop()
     }
+
+    pub(super) fn clear(&mut self) {
+        self.seen.clear();
+        self.queue.clear();
+    }
 }
 
 #[cfg(test)]

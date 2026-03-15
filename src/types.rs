@@ -125,7 +125,7 @@ impl std::fmt::Display for Boundary {
 
 impl PartialEq for State {
     fn eq(&self, other: &Self) -> bool {
-        self.0.as_ptr() == other.0.as_ptr()
+        self.addr() == other.addr()
     }
 }
 

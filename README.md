@@ -10,7 +10,7 @@ It uses regular expressions variant mostly consistent with [POSIX] (e.g. grep).
 * Alternation, like `a|b`, `dog|cat`.
 * Repetitions, e.g. `a?` (zero or one), `a+` (more than one), `a*` (any number), `a{5}` (exactly five), `a{2,3}`, etc.
 * Sub-patterns can be grouped with brackets `(xo)+`.
-* Matching group of characters like words `\w`, digits `\d`.
+* Matching groups of characters like words `\w`, digits `\d`.
 * Beginning `^` and end `$` of the string, or word bounds `\b`.
 
 Character groups using the `[[:alnum:]]` syntax are not supported. Other features available in some
@@ -18,7 +18,7 @@ regular expression syntaxes like references to subpatterns `\1`, or lazy matchin
 
 ## Implementation
 
-The implementation is bease on [Ken Thompson]'s NFA. More details can be found also in the chapter
+The implementation is beased on [Ken Thompson]'s NFA. More details can be found also in the chapter
 by [Ullman], and multiple blog posts, inclugin [Russ Cox], [Denis Kyashif], [Alex Grebenyuk], etc.
 
 Regular expression is parsed to a non-deterministic finite automata (NFA). This helps to avoid
@@ -68,7 +68,7 @@ it could reach.
    1. matched `a+` from the left branch (2), and
    2. matched `a` from the right branch (3) simultaneously
 4. "b"
-   1. did not match possible repetition of `a+` (2), so left branch jumps to state (6) and matches `b` and succeeds reaching state (7)
+   1. did not match the possible repetition of `a+` (2), so left branch jumps to state (6), matches `b`, and succeeds reaching state (7)
    2. matched `b` in the right branch (3)
 5. "d"
    1. "d" did not match `c?`, so it jumped to state (8) and matched `d` (9) finishing the match
@@ -125,7 +125,7 @@ implementation details and design decisions.
 
 ## Grammar
 
-The [POSIX] grammar is fully described in the Linux regex(7) man page.
+The [POSIX] regex grammar is fully described in the Linux regex(7) man page. It translates to the following:
 
 ```text
 NUM := a non-negative integer

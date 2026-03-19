@@ -52,6 +52,9 @@ integration-test: build
             }
         }
 
+        # character encoding issues (non utf-8)
+        FILENAME ~ /pcre-4/ { next }
+
         FILENAME ~ /rxposix|pcre-/ { FS = "\t" }
 
         # those lines failed to parse for some reason, so skipping them
@@ -69,8 +72,6 @@ integration-test: build
         $2 ~ /\\<|\\>/ { next }
         # dont care about empty branches in alternation
         $4 == "ENULL" || $4 == "BADESC" { next }
-
-        FILENAME ~ /pcre-4/ && FNR >= 19 && FNR <= 22 { next }
 
         // {
             if ($3 == "NULL") {

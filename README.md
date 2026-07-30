@@ -22,7 +22,7 @@ The implementation is beased on [Ken Thompson]'s NFA. More details can be found 
 by [Ullman], and multiple blog posts, including [Russ Cox], [Denis Kyashif], [Alex Grebenyuk], etc.
 
 Regular expression is parsed to a non-deterministic finite automata (NFA). This helps to avoid
-[backtracking] and makes it run in linear, rather than exponential, time as describd by [Russ Cox].
+[backtracking] and makes it run in linear, rather than exponential, time as described by [Russ Cox].
 
 For example, regular expression `a(a+|abc)bc?d` gets compiled to the graph shown below.
 Matching single characters like `a` are state transitions. Alternation, like

@@ -18,7 +18,7 @@ regular expression syntaxes like references to subpatterns `\1`, or lazy matchin
 
 ## Implementation
 
-The implementation is beased on [Ken Thompson]'s NFA. More details can be found also in the chapter
+The implementation is based on [Ken Thompson]'s NFA. More details can be found also in the chapter
 by [Ullman], and multiple blog posts, including [Russ Cox], [Denis Kyashif], [Alex Grebenyuk], etc.
 
 Regular expression is parsed to a non-deterministic finite automata (NFA). This helps to avoid
